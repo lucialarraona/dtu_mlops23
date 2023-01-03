@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from PIL import Image
 from torchvision.transforms import transforms
-
+import helper 
 
 
 def mnist():
@@ -15,22 +15,32 @@ def mnist():
     train = np.load('/Users/lucialarraona/dtu_mlops/data/corruptmnist/train_0.npz', allow_pickle=True)
     test = np.load('/Users/lucialarraona/dtu_mlops/data/corruptmnist/test.npz', allow_pickle=True)
     
+    # Define a transform to normalize the data
+    transform = transforms.Compose([transforms.ToTensor(),
+                                transforms.Normalize((0.5,), (0.5,))])  
+    
+    # How do I apply the transformations to the images?
+    train = list(zip(train['images'], train['labels']))
+    test = list(zip(test['images'], test['labels']))
 
-    train = list(zip(torch.tensor(np.float32(train['images'])), torch.tensor(np.float32(train['labels']))))
-    test = list(zip(torch.tensor(np.float32(test['images'])), torch.tensor(np.float32(test['labels']))))
+    #Convert to dataloader for training
+    train_loader = torch.utils.data.DataLoader(train, batch_size=128, shuffle=True)
+    test_loader = torch.utils.data.DataLoader(test, batch_size=128, shuffle=True)
 
-
-    return train, test
+    return train_loader, test_loader
 
 
 
 # Sanity check - Visualize data
-train, test = mnist()
+train_loader, test_loader = mnist()
+print(len(train_loader))
 
-#print(list(train.keys()))
-print(len(train))
-#print(train)
 
+
+image, label = next(iter(train_loader))
+helper.imshow(image[0,:]);
+
+"""
 # Multiple train data
 figure = plt.figure(figsize=(10, 8))
 cols, rows = 5, 5
@@ -41,27 +51,7 @@ for i in range(1, cols * rows + 1):
     figure.add_subplot(rows, cols, i)
     plt.title(label)
     plt.axis("off")
-    plt.imshow(img.squeeze()) #cmap = 'grayscale'
+    plt.imshow(img.squeeze(), cmap = 'gray') 
 plt.show()
+"""
 
-
-# Transform to dataloaders
-def toDataLoader(train,test):
-    """
-    Converts to dataloaders for better training optimization
-    """
-    train_loader = torch.utils.data.DataLoader(train, 
-                                          batch_size=128, 
-                                          shuffle=True
-                                          #num_workers=1
-                                          )
-    
-    test_loader = torch.utils.data.DataLoader(test, 
-                                          batch_size=128, 
-                                          shuffle=True
-                                          #num_workers=1
-                                          )
-    return train_loader, test_loader
-
-
-train_loader, test_loader = toDataLoader(train,test)
