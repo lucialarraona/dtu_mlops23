@@ -18,6 +18,7 @@ from src.data.make_dataset import MNISTdata
 import logging 
 HYDRA_FULL_ERROR=1 
 
+
 log = logging.getLogger(__name__)
 
 # Hydra hyperparameter configuration
