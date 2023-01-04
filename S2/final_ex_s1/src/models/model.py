@@ -1,7 +1,8 @@
 import torch.nn.functional as F
 from torch import nn
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import torch 
+import hydra
 
 class MyAwesomeModel(nn.Module):
     def __init__(self):
