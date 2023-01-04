@@ -1,8 +1,11 @@
 import argparse
 import sys
+import os 
 
 import click
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+import hydra
+from omegaconf import OmegaConf
 import torch
 import model 
 from model import MyAwesomeModel
@@ -13,10 +16,23 @@ from torch.utils.data import DataLoader, Dataset
 #from data import mnist
 from src.data.make_dataset import MNISTdata
 import logging 
+HYDRA_FULL_ERROR=1 
 
 log = logging.getLogger(__name__)
 
-def main():
+# Hydra hyperparameter configuration
+
+@hydra.main(
+    config_name="training_conf.yml", config_path="config")  # hydra currently supports only 1 config file
+
+
+def main(cfg):
+
+    print(f"configuration: \n {OmegaConf.to_yaml(cfg)}")
+    os.chdir(hydra.utils.get_original_cwd())
+    hparams = cfg.experiment
+    torch.manual_seed(hparams["seed"])
+
     device = "cpu"
     mymodel = MyAwesomeModel()
     mymodel = mymodel.to(device)
@@ -27,13 +43,12 @@ def main():
 
     # Create dataloaders
     trainloader = torch.utils.data.DataLoader(
-        train_data, batch_size=128, shuffle=True)
+        train_data, batch_size=hparams["batch_size"], shuffle=True)
     testloader = torch.utils.data.DataLoader(
-        test_data, batch_size=128, shuffle=True)
+        test_data, batch_size=hparams["batch_size"], shuffle=True)
 
     # hparams
- 
-    optimizer = torch.optim.Adam(mymodel.parameters(), lr = 1e-5)
+    optimizer = torch.optim.Adam(mymodel.parameters(), lr = hparams["lr"])
     criterion = torch.nn.CrossEntropyLoss()
 
     log.info("Start training...")
@@ -44,7 +59,7 @@ def main():
         trainloader,
         criterion,
         optimizer,
-        epochs = 5)
+        epochs = hparams["n_epochs"])
 
     # Save thecheckpoint
     checkpoint = {
