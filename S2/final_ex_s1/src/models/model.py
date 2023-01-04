@@ -58,7 +58,7 @@ def train(model,trainloader, loss_func, optimizer, epochs):
     #plt.plot(loss_tracker, '-')
     #plt.xlabel('Training step')
     #plt.ylabel('Training loss')
-    #plt.savefig("/Users/lucialarraona/Desktop/dtu_mlops23/S2/final_ex_s1/reports/figures/training_curve.png")
+    #plt.savefig("reports/figures/training_curve.png")
     
     return model
 
