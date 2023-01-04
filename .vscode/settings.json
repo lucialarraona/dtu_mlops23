@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "./S2/final_ex_s1/src",
+        "./S2/final_ex_s1/src/models"
+    ]
+}

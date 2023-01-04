@@ -1,6 +1,6 @@
 import torch.nn.functional as F
 from torch import nn
-import matplotlib as plt
+#import matplotlib.pyplot as plt
 import torch 
 
 class MyAwesomeModel(nn.Module):
@@ -31,9 +31,9 @@ model = MyAwesomeModel()
 print(model)
 
 
-def train(model,trainloader, loss_func, optimizer, epochs, lr):
+def train(model,trainloader, loss_func, optimizer, epochs):
     print("Training day and night")
-    print(lr)
+    #print(lr)
 
 
     # TODO: Implement training loop here
@@ -55,16 +55,16 @@ def train(model,trainloader, loss_func, optimizer, epochs, lr):
         print(f"Epoch {epoch+1}/{n_epoch}. Loss: {loss}")        
    # torch.save(model.state_dict(), 'trained_model.pt')
         
-    plt.plot(loss_tracker, '-')
-    plt.xlabel('Training step')
-    plt.ylabel('Training loss')
-    plt.savefig("/Users/lucialarraona/Desktop/dtu_mlops23/S2/final_ex_s1/reports/figures/training_curve.png")
+    #plt.plot(loss_tracker, '-')
+    #plt.xlabel('Training step')
+    #plt.ylabel('Training loss')
+    #plt.savefig("/Users/lucialarraona/Desktop/dtu_mlops23/S2/final_ex_s1/reports/figures/training_curve.png")
     
     return model
 
 
 
-def evaluate(model_checkpoint,model, testloader,loss_func,):
+def evaluate(model_checkpoint,model, testloader):
     print("Evaluating until hitting the ceiling")
     print(model_checkpoint)
 
