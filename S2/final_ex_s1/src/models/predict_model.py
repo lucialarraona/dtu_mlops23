@@ -33,7 +33,7 @@ def main(model_filepath, data_filepath):
 
     def load_checkpoint(filepath):
         checkpoint = torch.load(filepath)
-        my_model = MyAwesomeModel(checkpoint["hidden_size"], checkpoint["output_size"])
+        my_model = MyAwesomeModel()
         my_model.load_state_dict(checkpoint["state_dict"])
 
         return my_model
@@ -58,7 +58,7 @@ def main(model_filepath, data_filepath):
     sampleloader = torch.utils.data.DataLoader(sample_data, batch_size=64, shuffle=True)
     criterion = nn.NLLLoss()
 
-    sample_loss, accuracy = model.validation(my_model, sampleloader, criterion)
+    sample_loss, accuracy,_,_,_ = model.evaluate(my_model, sampleloader,criterion)
     print(f"test loss: {sample_loss}, accuracy: {accuracy}")
 
 

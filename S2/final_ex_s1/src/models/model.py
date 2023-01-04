@@ -64,24 +64,30 @@ def train(model,trainloader, loss_func, optimizer, epochs):
 
 
 
-def evaluate(model_checkpoint,model, testloader):
+def evaluate(model, testloader,criterion):
     print("Evaluating until hitting the ceiling")
-    print(model_checkpoint)
+    print(model)
 
     # TODO: Implement evaluation logic here
-    device = 'cpu'
-    model.load_state_dict(torch.load(model.checkpoint))
-    model = model.to(device)
-    
-    correct, total = 0, 0
-    for batch in testloader:
-        x, y = batch
+    accuracy = 0
+    test_loss = 0
+    for images, labels in testloader:
+
+        output = model.forward(images)
+        test_loss += criterion(output, labels).item()
+
+        ## Calculating the accuracy
+        # Model's output is log-softmax, take exponential to get the probabilities
+        ps = torch.exp(output)
+        # Class with highest probability is our predicted class, compare with true label
+        equality = labels.data == ps.max(1)[1]
+        # Accuracy is number of correct predictions divided by all predictions, just take the mean
+        accuracy += equality.type_as(torch.FloatTensor()).mean()
         
-        preds = model(x.to(device))
-        preds = preds.argmax(dim=-1)
+    #print(f"Test set accuracy {test_loss}")
+
+    return test_loss, accuracy, ps.max(1)[1], labels.data, images
+
         
-        correct += (preds == y.to(device)).sum().item()
-        total += y.numel()
-        
-    print(f"Test set accuracy {correct/total}")
+  
 
