@@ -3,6 +3,7 @@ from torch import nn
 import matplotlib.pyplot as plt
 import torch 
 import hydra
+import pdb
 
 class MyAwesomeModel(nn.Module):
     def __init__(self):
@@ -31,6 +32,7 @@ class MyAwesomeModel(nn.Module):
 model = MyAwesomeModel()
 print(model)
 
+pdb.set_trace()
 
 def train(model,trainloader, loss_func, optimizer, epochs):
     print("Training day and night")
