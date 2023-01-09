@@ -11,4 +11,7 @@ python-dotenv>=0.5.1
 matplotlib 
 torch 
 torchvision
-
+pytest
+sys 
+os 
+cgi
