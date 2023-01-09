@@ -10,7 +10,7 @@ import torch
 from torch.utils.data import Dataset
 
 from src.data.make_dataset import MNISTdata
-#from tests import _PATH_DATA
+from tests import _PATH_DATA
 
 
 
