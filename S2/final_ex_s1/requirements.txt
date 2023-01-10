@@ -12,7 +12,6 @@ matplotlib
 torch 
 torchvision
 pytest
-sys 
-os 
+os-sys 
 cgi
 omegaconf
